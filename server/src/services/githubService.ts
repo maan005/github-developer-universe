@@ -5,23 +5,27 @@ const cache = new NodeCache({
   stdTTL: 60,
 });
 
+const githubHeaders = {
+  Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+};
+
 export const getGithubProfile = async (
   username: string
 ) => {
   const cacheKey = `profile-${username}`;
 
-  const cached =
-    cache.get(cacheKey);
+  const cached = cache.get(cacheKey);
 
   if (cached) {
-    console.log(
-      `CACHE HIT: ${cacheKey}`
-    );
+    console.log(`CACHE HIT: ${cacheKey}`);
     return cached;
   }
 
   const { data } = await axios.get(
-    `https://api.github.com/users/${username}`
+    `https://api.github.com/users/${username}`,
+    {
+      headers: githubHeaders,
+    }
   );
 
   cache.set(cacheKey, data);
@@ -34,18 +38,18 @@ export const getGithubRepos = async (
 ) => {
   const cacheKey = `repos-${username}`;
 
-  const cached =
-    cache.get(cacheKey);
+  const cached = cache.get(cacheKey);
 
   if (cached) {
-    console.log(
-      `CACHE HIT: ${cacheKey}`
-    );
+    console.log(`CACHE HIT: ${cacheKey}`);
     return cached;
   }
 
   const { data } = await axios.get(
-    `https://api.github.com/users/${username}/repos?per_page=100`
+    `https://api.github.com/users/${username}/repos?per_page=100`,
+    {
+      headers: githubHeaders,
+    }
   );
 
   cache.set(cacheKey, data);
