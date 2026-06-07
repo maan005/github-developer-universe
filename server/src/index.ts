@@ -11,7 +11,7 @@ app.get("/", (_req, res) => {
   res.send("GitHub Developer Universe API Running 🚀");
 });
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 app.use("/api/github", githubRoutes);
 
