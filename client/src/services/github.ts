@@ -4,7 +4,7 @@ export const fetchGithubUser = async (
   username: string
 ) => {
   const { data } = await axios.get(
-    `http://localhost:8000/api/github/${username}`
+    `https://github-developer-universe.onrender.com${username}`
   );
 
   return data;
